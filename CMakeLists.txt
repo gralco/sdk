@@ -469,6 +469,10 @@ set(SA_SOURCE
     src/Utils/intrusive_list.h
     src/Utils/Utils.cpp
     src/Utils/Utils.h
+
+    bindings/c/include/amplitude_common.h
+    bindings/c/include/amplitude_engine.h
+    bindings/c/src/amplitude_engine.cpp
 )
 
 if (AM_PLATFORM_ANDROID)
@@ -486,6 +490,7 @@ endif ()
 # Includes for this project
 include_directories(src
     include
+    bindings
     ${AM_FLATBUFFERS_GENERATED_INCLUDES_DIR}
     ${MINIAUDIO_INCLUDE_DIRS}
 )
