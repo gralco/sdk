@@ -473,8 +473,10 @@ set(SA_SOURCE
     bindings/c/include/amplitude_common.h
     bindings/c/include/amplitude_engine.h
     bindings/c/include/amplitude_memory.h
+    bindings/c/include/amplitude_thread.h
     bindings/c/src/amplitude_engine.cpp
     bindings/c/src/amplitude_memory.cpp
+    bindings/c/src/amplitude_thread.cpp
 )
 
 if (AM_PLATFORM_ANDROID)
