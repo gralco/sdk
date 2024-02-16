@@ -20,6 +20,7 @@
 // Standard Library
 // --------------------------------------------------------------
 
+#ifndef AM_C_API
 #include <algorithm>
 #include <array>
 #include <atomic>
@@ -33,6 +34,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#endif
 
 // Amplitude
 // --------------------------------------------------------------
