@@ -38,7 +38,7 @@ typedef struct
     am_bool (*open)(am_voidptr user_data, am_file_handle file);
     am_bool (*close)(am_voidptr user_data);
     am_uint64 (*load)(am_voidptr user_data, am_voidptr out);
-    am_uint64 (*stream)(am_voidptr user_data, am_voidptr out, am_uint64 offset, am_uint64 length);
+    am_uint64 (*stream)(am_voidptr user_data, am_voidptr out, am_uint64 buffer_offset, am_uint64 seek_offset, am_uint64 length);
     am_bool (*seek)(am_voidptr user_data, am_uint64 offset);
 } am_codec_decoder_vtable;
 

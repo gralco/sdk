@@ -52,14 +52,14 @@ public:
             return AM_BOOL_TO_BOOL(_v_table->close(_user_data));
         }
 
-        AmUInt64 Load(AmVoidPtr out) override
+        AmUInt64 Load(AudioBuffer* out) override
         {
-            return _v_table->load(_user_data, out);
+            return _v_table->load(_user_data, out->GetData().GetBuffer());
         }
 
-        AmUInt64 Stream(AmVoidPtr out, AmUInt64 offset, AmUInt64 length) override
+        AmUInt64 Stream(AudioBuffer* out, AmUInt64 bufferOffset, AmUInt64 seekOffset, AmUInt64 length) override
         {
-            return _v_table->stream(_user_data, out, offset, length);
+            return _v_table->stream(_user_data, out->GetData().GetBuffer(), bufferOffset, seekOffset, length);
         }
 
         bool Seek(AmUInt64 offset) override
@@ -103,9 +103,9 @@ public:
             return AM_BOOL_TO_BOOL(_v_table->close(_user_data));
         }
 
-        AmUInt64 Write(AmVoidPtr in, AmUInt64 offset, AmUInt64 length) override
+        AmUInt64 Write(AudioBuffer* in, AmUInt64 offset, AmUInt64 length) override
         {
-            return _v_table->write(_user_data, in, offset, length);
+            return _v_table->write(_user_data, in->GetData().GetBuffer(), offset, length);
         }
 
     private:
@@ -129,22 +129,22 @@ public:
 
     Decoder* CreateDecoder() override
     {
-        return ampoolnew(MemoryPoolKind::Codec, CDecoder, this, _config.decoder.v_table, _config.decoder.user_data);
+        return ampoolnew(eMemoryPoolKind_Codec, CDecoder, this, _config.decoder.v_table, _config.decoder.user_data);
     }
 
     void DestroyDecoder(Decoder* decoder) override
     {
-        ampooldelete(MemoryPoolKind::Codec, CDecoder, (CDecoder*)decoder);
+        ampooldelete(eMemoryPoolKind_Codec, CDecoder, (CDecoder*)decoder);
     }
 
     Encoder* CreateEncoder() override
     {
-        return ampoolnew(MemoryPoolKind::Codec, CEncoder, this, _config.encoder.v_table, _config.encoder.user_data);
+        return ampoolnew(eMemoryPoolKind_Codec, CEncoder, this, _config.encoder.v_table, _config.encoder.user_data);
     }
 
     void DestroyEncoder(Encoder* encoder) override
     {
-        ampooldelete(MemoryPoolKind::Codec, CEncoder, (CEncoder*)encoder);
+        ampooldelete(eMemoryPoolKind_Codec, CEncoder, (CEncoder*)encoder);
     }
 
     [[nodiscard]] bool CanHandleFile(std::shared_ptr<File> file) const override
@@ -156,7 +156,7 @@ private:
     am_codec_config _config;
 };
 
-static std::map<std::string_view, AmUniquePtr<MemoryPoolKind::Codec, CCodec>> g_registered_codecs = {};
+static std::map<std::string_view, AmUniquePtr<CCodec, eMemoryPoolKind_Codec>> g_registered_codecs = {};
 
 extern "C" {
 AM_API_PUBLIC am_codec_config am_codec_config_init(const char* name)
@@ -179,7 +179,7 @@ AM_API_PUBLIC void am_codec_register(const am_codec_config* config)
     if (g_registered_codecs.contains(config->name))
         return;
 
-    g_registered_codecs.emplace(config->name, ampoolnew(MemoryPoolKind::Codec, CCodec, *config));
+    g_registered_codecs.emplace(config->name, ampoolnew(eMemoryPoolKind_Codec, CCodec, *config));
 }
 
 AM_API_PUBLIC void am_codec_unregister(const char* name)
@@ -189,7 +189,7 @@ AM_API_PUBLIC void am_codec_unregister(const char* name)
 
 AM_API_PUBLIC am_codec_handle am_codec_find(const char* name)
 {
-    return reinterpret_cast<am_codec_handle>(Codec::Find(name));
+    return reinterpret_cast<am_codec_handle>(Codec::Find(name).get());
 }
 
 AM_API_PUBLIC am_bool am_codec_can_handle_file(am_codec_handle codec, am_file_handle file)
