@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SS_AMPLITUDE_FILESYSTEM_H
-#define SS_AMPLITUDE_FILESYSTEM_H
+#ifndef _AM_C_FILE_SYSTEM_H
+#define _AM_C_FILE_SYSTEM_H
 
 #include "amplitude_common.h"
 
@@ -196,4 +196,4 @@ am_bool am_filesystem_try_finalize_close(am_filesystem_handle filesystem);
 } // extern "C"
 #endif
 
-#endif // SS_AMPLITUDE_FILESYSTEM_H
+#endif // _AM_C_FILE_SYSTEM_H

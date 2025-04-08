@@ -12,20 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SS_AMPLITUDE_BUS_H
-#define SS_AMPLITUDE_BUS_H
+#ifndef _AM_C_BUS_H
+#define _AM_C_BUS_H
 
 #include "amplitude_common.h"
 
 struct am_bus;
+
+/**
+ * @brief An object representing one node in the tree of buses. Buses are used to adjust a set of channel gains in tandem.
+ */
 typedef struct am_bus am_bus;
+
+/**
+ * @brief Represents a handle to a bus object.
+ */
 typedef am_bus* am_bus_handle;
 
+/**
+ * @brief Represents the unique ID of a bus.
+ *
+ * @note This is a 64-bit unsigned integer.
+ */
 typedef am_uint64 am_bus_id;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/**
+ * @brief Checks if the given bus is valid.
+ *
+ * @param bus The bus to check.
+ *
+ * @return `AM_TRUE` if the bus is valid, `AM_FALSE` otherwise.
+ */
+am_bool am_bus_is_valid(am_bus_handle bus);
 
 /**
  * @brief Gets the unique ID of the given bus.
@@ -63,7 +85,7 @@ void am_bus_set_gain(am_bus_handle bus, am_float32 gain);
 am_float32 am_bus_get_gain(am_bus_handle bus);
 
 /**
- * @brief Fades to <code>gain</code> over <code>duration</code> seconds.
+ * @brief Fades to `gain` over `duration` seconds.
  *
  * @param bus The bus.
  * @param target_gain The gain value to fade to.
@@ -80,7 +102,7 @@ void am_bus_fade_to(am_bus_handle bus, am_float32 target_gain, am_time duration)
  *
  * @param bus The bus.
  *
- * @return AmReal32 The final calculated gain.
+ * @return The final calculated gain.
  */
 am_float32 am_bus_get_final_gain(am_bus_handle bus);
 
@@ -105,4 +127,4 @@ am_bool am_bus_is_muted(am_bus_handle bus);
 }
 #endif
 
-#endif // SS_AMPLITUDE_BUS_H
+#endif // _AM_C_BUS_H

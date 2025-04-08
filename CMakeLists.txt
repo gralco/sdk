@@ -480,6 +480,7 @@ set(SA_SOURCE
     bindings/c/include/amplitude_thread.h
     bindings/c/src/amplitude_bus.cpp
     bindings/c/src/amplitude_codec.cpp
+    bindings/c/src/amplitude_common.cpp
     bindings/c/src/amplitude_channel.cpp
     bindings/c/src/amplitude_engine.cpp
     bindings/c/src/amplitude_filesystem.cpp

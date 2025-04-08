@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SS_AMPLITUDE_COMMON_H
-#define SS_AMPLITUDE_COMMON_H
+#ifndef _AM_C_COMMON_H
+#define _AM_C_COMMON_H
 
-#if defined(_WIN32) || defined(_WIN64) || defined(WINAPI_FAMILY)
+#if AM_PLATFORM_WIN
 typedef wchar_t am_oschar;
-#elif defined(__ANDROID__)
+#elif AM_PLATFORM_ANDROID
 typedef char am_oschar;
-#elif defined(__linux__)
+#elif AM_PLATFORM_LINUX
 typedef char am_oschar;
-#elif defined(__APPLE__)
+#elif AM_PLATFORM_APPLE
 typedef char am_oschar;
 #endif
 
@@ -59,11 +59,23 @@ typedef am_uint32 am_bool;
 #define AM_TRUE 1
 #define AM_FALSE 0
 
-#define AM_C_API
-#include <SparkyStudios/Audio/Amplitude/Core/Common.h>
-
 typedef AmVec2 am_vec2;
 typedef AmVec3 am_vec3;
 typedef AmVec4 am_vec4;
 
-#endif // SS_AMPLITUDE_COMMON_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @brief Free allocated memory for a string.
+ *
+ * @param str The string to be freed.
+ */
+void am_free_string(const char* str);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // _AM_C_COMMON_H

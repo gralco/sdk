@@ -19,6 +19,18 @@
 #include "amplitude_internals.h"
 
 extern "C" {
+AM_API_PUBLIC am_bool am_channel_is_valid(am_channel_handle channel)
+{
+    const Channel c(reinterpret_cast<ChannelInternalState*>(channel));
+    return BOOL_TO_AM_BOOL(c.Valid());
+}
+
+AM_API_PUBLIC am_channel_id am_channel_get_id(am_channel_handle channel)
+{
+    const Channel c(reinterpret_cast<ChannelInternalState*>(channel));
+    return c.GetId();
+}
+
 AM_API_PUBLIC am_bool am_channel_playing(am_channel_handle channel)
 {
     const Channel c(reinterpret_cast<ChannelInternalState*>(channel));
@@ -86,5 +98,18 @@ AM_API_PUBLIC am_channel_playback_state am_channel_get_playback_state(am_channel
 {
     const Channel c(reinterpret_cast<ChannelInternalState*>(channel));
     return static_cast<am_channel_playback_state>(c.GetPlaybackState());
+}
+
+AM_API_PUBLIC void am_channel_on_event(
+    am_channel_handle channel, am_channel_event event, am_channel_event_callback callback, void* user_data)
+{
+    const Channel c(reinterpret_cast<ChannelInternalState*>(channel));
+    c.On(
+        static_cast<ChannelEvent>(event),
+        [callback](ChannelEventInfo info)
+        {
+            callback(reinterpret_cast<am_channel_handle>(info.m_source), info.m_userData);
+        },
+        user_data);
 }
 }

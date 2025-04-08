@@ -19,6 +19,12 @@
 #include "amplitude_internals.h"
 
 extern "C" {
+AM_API_PUBLIC am_bool am_bus_is_valid(am_bus_handle bus)
+{
+    const Bus b(reinterpret_cast<BusInternalState*>(bus));
+    return BOOL_TO_AM_BOOL(b.Valid());
+}
+
 AM_API_PUBLIC am_bus_id am_bus_get_id(am_bus_handle bus)
 {
     const Bus b(reinterpret_cast<BusInternalState*>(bus));
@@ -28,7 +34,7 @@ AM_API_PUBLIC am_bus_id am_bus_get_id(am_bus_handle bus)
 AM_API_PUBLIC const char* am_bus_get_name(am_bus_handle bus)
 {
     const Bus b(reinterpret_cast<BusInternalState*>(bus));
-    return am_allocate_string(b.GetName().c_str());
+    return am_allocate_string(b.GetName());
 }
 
 AM_API_PUBLIC void am_bus_set_gain(am_bus_handle bus, am_float32 gain)
